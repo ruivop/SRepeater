@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Para fazer os testes</title>
+	<script src="packages/jquery-3.4.1/jquery-3.4.1.js"></script>
+	<link rel="stylesheet" href="packages/bootstrap-4.3.1-dist/css/bootstrap.css">
+	<script src="packages/bootstrap-4.3.1-dist/js/bootstrap.js"></script>
+	<script src="toColorize.js"></script>
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+	<div id="contentDisplay">
+		<div class="ArrayInput">
+			<h1>Input Array</h1>
+			<textarea id="inputArray">
+Acemetacina Rantudil Cápsula 60 mg
+Acetato de zinco Wilzin Cápsula 25 mg
+Acetato de zinco Wilzin Cápsula 50 mg
+Ácido acetilsalicílico Asacard Cápsula 162.5 mg
+</textarea>
+		</div>
+
+		<div class="inputContainer">
+
+			<h1>Input Text</h1>
+			<div class="mainTextInput">
+				<div class="backdrop">
+					<div id="colorPrint"></div>
+				</div>
+
+				<textarea id="input">
+//Simple string
+Hello World
+
+//Numbers
+$N r u.5$
+$N r ul.5.10$
+
+//Vars
+VAR1 = $N r u.5 v.var1 isVisible.false$ (invisible)
+VAR2 = $N r ul.5.10 v.var2$
+
+//Contexts
+$C n u.2 v.var5$
+/////VAR5 = $V v.var5$/////
+VAR3 = $N r u.5 v.var3 isVisible.true$ (visible)
+VAR4 = $N r ul.5.10 v.var4 isVisible.false$ (invisible)
+				
+VAR1 = $V v.var1$
+VAR2 = $V v.var2$
+				
+$N r u.5 isVisible.true$ (visible)
+$N r ul.5.10 isVisible.false$ (invisible)
+$EC$
+				
+VAR1 = $V v.var1$
+VAR2 = $V v.var2$
+
+
+//Arrays
+$C a v.var5$
+$V v.var5$
+$EC$
+
+Array element in position 0: $A n.0$
+
+Array element in position given by var1: $A v.var1$
+
+//Strings
+RANDOM STRING = $S r.10$
+		</textarea>
+			</div>
+			<button onclick="createOutput()">Create</button>
+			<div class="inputErrorMessage"></div>
+		</div>
+
+		<div id="colorPrintProperties">
+			<h1>Properties</h1>
+			<table id="colorPrintPropertiesTable">
+				<tr>
+					<td>
+						Name
+					</td>
+					<td>
+						Value
+					</td>
+				</tr>
+				<tr class="colorPrintPropertyName">
+					<td>
+
+					</td>
+					<td class="colorPrintPropertyValue">
+
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<div class="outputArea">
+			<h1>Output</h1>
+			<textarea id="output" readonly></textarea>
+
+			<button onclick="copyFunction()">Copy text</button>
+		</div>
+	</div>
+
+
+	<script src="create_tests.js"></script>
+</body>
+
+</html>

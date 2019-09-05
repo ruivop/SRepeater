@@ -1,0 +1,143 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+.selectable {
+    background-color: rgb(240, 248, 255);
+}
+
+.nested {
+    background-color: rgba(255, 154, 21, 0.096);
+}
+
+textarea {
+    width: 100%;
+    height: 100%;
+}
+
+.inputErrorMessage {
+    background-color: crimson;
+    color: aliceblue;
+    padding-left: 10px;
+    height: fit-content;
+}
+
+table {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+  
+table td, table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+table tr:nth-child(even){background-color: #f2f2f2;}
+
+table tr:hover {background-color: #ddd;}
+
+table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}
+
+/*
+To make the colors of the editable input
+*/
+
+.mainTextInput {
+    width: 100%;
+    height: 73%;
+}
+
+#input,
+.backdrop {
+    width: 100%;
+    height: 100%;
+}
+
+#colorPrint,
+#input {
+    padding: 10px;
+    font: 20px/28px 'Open Sans', sans-serif;
+    letter-spacing: 1px;
+}
+
+.mainTextInput {
+    display: block;
+    margin: 0 auto;
+    transform: translateZ(0);
+    -webkit-text-size-adjust: none;
+}
+
+.backdrop {
+    position: absolute;
+    z-index: 1;
+    border: 1px solid #685972;
+    background-color: #fff;
+    overflow: auto;
+    pointer-events: all;
+}
+
+#colorPrint {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    color: transparent;
+}
+
+#input {
+    display: block;
+    position: absolute;
+    z-index: 2;
+    margin: 0;
+    border: 1px solid #74637f;
+    border-radius: 0;
+    color: #444;
+    background-color: transparent;
+    overflow: auto;
+    resize: none;
+}
+
+
+/**
+
+
+
+
+*/
+
+#contentDisplay {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    grid-template-rows: 2fr 1fr;
+    grid-column-gap: 10px;
+}
+
+.outputArea {
+    grid-column-start: 2;
+    grid-column-end: 3;
+}
+
+.ArrayInput {
+    grid-row-start: 1;
+    grid-row-end: 3;
+}
+
+/*
+span {
+    white-space: pre-wrap;
+}
+
+.backdrop {
+    overflow: auto;
+    background-color: #fff;
+}
+
+#colorPrint {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    color: transparent;
+}*/
