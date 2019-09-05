@@ -229,6 +229,8 @@ class TypePatern {
                 }
 
                 var clonedVars;
+                varInitValue = parseInt(varInitValue);
+                varFinalValue =  parseInt(varFinalValue)
                 for (var i = varInitValue; i < varFinalValue; i++) {
                     if (varName)
                         clonedVars = addUserVar(userVars.slice(0), new UserVar(varName, i));
