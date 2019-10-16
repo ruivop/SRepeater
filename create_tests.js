@@ -52,6 +52,7 @@ function createNestedParts(stringInput) {
         } else if (userPart.type == "patrern" && userPart.args[0].type == "EC") {
             if (contextIndex <= 0)
                 throw 'There is an "ec" without an "c"';
+            contexts[contextIndex].nestedParts.push(userPart);
             contextIndex--;
             contexts.pop();
             continue;
@@ -72,6 +73,7 @@ class TypePatern {
         this.type;
         this.args = [];
         this.nestedParts = [];
+        this.isSelected = false;
 
         if (splitpartern.test(str))
             this.type = "patrern";
@@ -271,7 +273,6 @@ class TypePatern {
         //if (this.type == "string") {
         if (!isRoot) {
             var textEl = document.createElement("span");
-            inputRectangles.push([textEl, this]);
 
             var textChild = document.createTextNode(this.str);
             textEl.appendChild(textChild);
@@ -288,7 +289,34 @@ class TypePatern {
             scriptEl.appendChild(nestedElementsChilds);
         } //
 
+        if (this.isSelected)
+            scriptEl.classList.add("selectable");
+
         elementToPrint.appendChild(scriptEl);
+    }
+
+    getElementFromTextOffset(offset, isRoot) {
+        var newOffset = offset;
+        if (!isRoot) {
+            newOffset = offset - this.str.length;
+
+            if (newOffset <= 0) {
+                this.isSelected = true;
+                return [newOffset, this];
+            } else {
+                this.isSelected = false;
+            }
+        }
+
+        if (this.type != "string" && this.args[0].type == "C") {
+            for (var part of this.nestedParts) {
+                var result = part.getElementFromTextOffset(newOffset, false);
+                if (result[1] != null)
+                    return result;
+                newOffset = result[0];
+            }
+        }
+        return [newOffset, null];
     }
 }
 
@@ -313,10 +341,9 @@ var rootContext = new TypePatern("$C n u.1$");
 
 var userArrays = [];
 
-var inputRectangles = [];
-
 function colorPrint() {
     stringInput = document.getElementById("input").value;
+    stringInput += " ";
     var elementToPrint = document.getElementById("colorPrint");
     if (elementToPrint.children.length > 0)
         elementToPrint.removeChild(elementToPrint.children[0]);
@@ -327,8 +354,12 @@ function colorPrint() {
         console.log(e);
         $('.inputErrorMessage').html(e);
     }
-    inputRectangles = [];
+
+    var elementSelected = rootContext.getElementFromTextOffset(document.getElementById("input").selectionStart, true);
+    onMouseEnterElement(elementSelected[1]);
+
     rootContext.printWithColors(elementToPrint, true);
+    handleScroll();
 }
 
 function onMouseEnterElement(element) {
@@ -356,32 +387,6 @@ function onMouseEnterElement(element) {
             elementToPrintBody.appendChild(trEl);
         }
     }
-}
-
-function onClickInputTextArea(e) {
-    var smallerElement;
-    for (var el of inputRectangles) {
-        var box = el[0].getBoundingClientRect();
-        if (e.clientX <= box.right &&
-            e.clientX >= box.left &&
-            e.clientY >= box.top &&
-            e.clientY <= box.bottom) {
-            if (!smallerElement)
-                smallerElement = el;
-            else if (smallerElement[0].getBoundingClientRect().height > box.height) {
-                smallerElement[0].classList = [];
-                smallerElement = el;
-            } else
-                el[0].classList = [];
-        } else {
-            el[0].classList = [];
-        }
-    }
-    if (smallerElement) {
-        onMouseEnterElement(smallerElement[1]);
-        smallerElement[0].classList.add("selectable");
-    } else
-        onMouseEnterElement(null);
 }
 
 function creteTr2Elm(fEl, sEl) {
@@ -526,12 +531,6 @@ function applyHighlights(text) {
     return text;
 }
 
-function handleInput() {
-    var text = $textarea.val();
-    var highlightedText = applyHighlights(text);
-    $highlights.html(highlightedText);
-}
-
 function handleScroll() {
     var scrollTop = $textarea.scrollTop();
     $backdrop.scrollTop(scrollTop);
@@ -550,9 +549,9 @@ function fixIOS() {
 
 function bindEvents() {
     $textarea.on({
-        'input': colorPrint,
+        'keyup': colorPrint,
         'scroll': handleScroll,
-        'click': onClickInputTextArea
+        'click': colorPrint
     });
 }
 
