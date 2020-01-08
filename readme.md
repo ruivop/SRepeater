@@ -6,7 +6,7 @@ The main features of this program include:
 * inputting arrays of strings
 * creating random numbers and strings and storing them in variables to show them later
 
-I tried to do a visual editor (like an IDE) [here](https://github.com/ruivop/SRepeater).
+I tried to do a visual editor (like an IDE) [here](https://ruivop.github.io/SRepeater/).
 
 ## Annotations
 
