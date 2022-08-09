@@ -20,7 +20,7 @@ function createOutput() {
 
     var concat = "";
     try {
-        concat = rootContext.getOuput();
+        concat = rootContext.getOutput();
         $('.inputErrorMessage').html("");
     } catch (e) {
         console.log(e);
@@ -33,10 +33,10 @@ function createOutput() {
 
 function createNestedParts(stringInput) {
     var objectParts = [];
-    var stringParts = stringInput.split(splitpartern);
+    var stringParts = stringInput.split(splitPattern);
 
     for (var stringPart of stringParts) {
-        objectParts.push(new TypePatern(stringPart));
+        objectParts.push(new TypePattern(stringPart));
     }
 
     rootContext.nestedParts = [];
@@ -44,12 +44,12 @@ function createNestedParts(stringInput) {
     var contexts = [rootContext];
 
     for (userPart of objectParts) {
-        if (userPart.type == "patrern" && userPart.args[0].type == "C") {
+        if (userPart.type == "pattern" && userPart.args[0].type == "C") {
             contexts.push(userPart);
             contexts[contextIndex].nestedParts.push(userPart);
             contextIndex++;
             continue;
-        } else if (userPart.type == "patrern" && userPart.args[0].type == "EC") {
+        } else if (userPart.type == "pattern" && userPart.args[0].type == "EC") {
             if (contextIndex <= 0)
                 throw 'There is an "ec" without an "c"';
             contexts[contextIndex].nestedParts.push(userPart);
@@ -67,7 +67,7 @@ function createNestedParts(stringInput) {
 
 
 
-class TypePatern {
+class TypePattern {
     constructor(str) {
         this.str = str;
         this.type;
@@ -75,12 +75,12 @@ class TypePatern {
         this.nestedParts = [];
         this.isSelected = false;
 
-        if (splitpartern.test(str))
-            this.type = "patrern";
+        if (splitPattern.test(str))
+            this.type = "pattern";
         else
             this.type = "string";
 
-        if (this.type == "patrern") {
+        if (this.type == "pattern") {
 
 
             var argsStringArray = str.substring(1, str.length - 1).split(" ");
@@ -260,9 +260,13 @@ class TypePatern {
             }
             return concat;
         }
+
+        if(this.args[0].type == "EC") {
+            return "";
+        }
     }
 
-    getOuput() {
+    getOutput() {
         var userVars = [];
         return this.giveIndex(userVars);
     }
@@ -280,13 +284,13 @@ class TypePatern {
         }
         //} else {
         if (this.type != "string" && this.args[0].type == "C") {
-            var nestedElementsChilds = document.createElement("span");
-            nestedElementsChilds.classList.add("nested");
+            var nestedElementsChildren = document.createElement("span");
+            nestedElementsChildren.classList.add("nested");
 
             for (var part of this.nestedParts)
-                part.printWithColors(nestedElementsChilds, false);
+                part.printWithColors(nestedElementsChildren, false);
 
-            scriptEl.appendChild(nestedElementsChilds);
+            scriptEl.appendChild(nestedElementsChildren);
         } //
 
         if (this.isSelected)
@@ -335,9 +339,9 @@ class UserVar {
     }
 }
 
-var splitpartern = /(\$.*?\$)/g;
+var splitPattern = /(\$.*?\$)/g;
 
-var rootContext = new TypePatern("$C n u.1$");
+var rootContext = new TypePattern("$C n u.1$");
 
 var userArrays = [];
 
@@ -411,7 +415,7 @@ function deleteFromName(userVars, varName) {
             return newArray;
         newArray.push(userVars[i]);
     }
-    throw 'Unkown variable "' + varName + '"';
+    throw 'Unknown variable "' + varName + '"';
 }
 
 function addUserVar(userArray, toAdd) {
@@ -451,7 +455,7 @@ function testMustContainEither(args, musts) {
         }
     }
     if (!wasFound) {
-        var errorString = "One of the folowing must be present: ";
+        var errorString = "One of the following must be present: ";
         for (var must of musts) {
             errorString += '"' + must.type + "', ";
         }
@@ -469,7 +473,7 @@ function testNotContainMoreThanCapable(args, capables) {
             }
         }
         if (!wasFound)
-            throw '"' + arg.type + '" is not supprted in the context';
+            throw '"' + arg.type + '" is not supported in the context';
     }
 }
 
